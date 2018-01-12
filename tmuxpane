@@ -2,7 +2,6 @@
 
 DIRECTION=$1
 PANES="$(tmux display-message -p '#{window_panes}')"
-CURRENT_PANE="$(tmux display-message -p '#{pane_index}')"
 
 if [ $PANES -gt 1 ]
 then
@@ -12,34 +11,9 @@ then
   fi
 fi
 
-if [ $DIRECTION == "Up" ]
-then
-  tmux resize-pane -Z
-  exit 0
-fi
-
-if [ $PANES -eq 3 ]
-then
-  if [ $DIRECTION == "Right" ]
-  then
-    if [ $CURRENT_PANE -eq 1 ]
-    then
-      tmux select-pane -t 2
-    else
-      tmux select-pane -t 1
-    fi
-    exit 0
-  fi
-  if [ $DIRECTION == "Left" ]
-  then
-    tmux select-pane -t 0
-    exit 0
-  fi
-fi
-
 if [ $PANES -eq 1 ]
 then
-  if [ $DIRECTION == "Right" ]
+  if [ $DIRECTION == "Up" ]
   then
     tmux split-window -h
     exit 0
@@ -48,22 +22,7 @@ fi
 
 if [ $PANES -eq 2 ]
 then
-  if [ $DIRECTION == "Right" ]
-  then
-    if [ $CURRENT_PANE -eq 1 ]
-    then
-      tmux split-window -v
-    else
-      tmux select-pane -t 1
-    fi
-    exit 0
-  fi
-  if [ $DIRECTION == "Left" ]
-  then
-    tmux select-pane -t 0
-    exit 0
-  fi
-  if [ $DIRECTION == "Down" ]
+  if [ $DIRECTION == "Up" ]
   then
     tmux select-pane -t 1
     tmux split-window -v
